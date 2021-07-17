@@ -7,6 +7,8 @@ package run;
 
 import dao.CategoriaDao;
 import dao.ProdutoDao;
+import java.util.ArrayList;
+import java.util.List;
 import model.Categoria;
 import model.Produto;
 
@@ -26,7 +28,7 @@ public class Cadastro {
     }
     
     private void cadastraCategorias() {
-        String[] descricao = {"Utilidades", "Geral", "Multimídia"};
+        String[] descricao = {"Utilidades", "Geral"};
         
         Categoria categoria = null;
         CategoriaDao categoriaDao = new CategoriaDao();
@@ -46,11 +48,15 @@ public class Cadastro {
         Produto produto = null;
         ProdutoDao produtoDao = new ProdutoDao();
         
+        List<Categoria> listaCategoria = new ArrayList<>();
+        listaCategoria.add( new Categoria(1));
+        listaCategoria.add( new Categoria(2));
+        
         for (int i = 0; i < descricao.length; i++) {
             produto = new Produto();
             produto.setDescricao(descricao[i]);
             produto.setPreco(preco[i]);
-            produto.setIdCategoria( new Categoria(i + 1) );
+            produto.setCategoriaCollection(listaCategoria);
             
             produtoDao.salvar(produto);
         }

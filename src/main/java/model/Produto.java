@@ -6,6 +6,7 @@
 package model;
 
 import java.io.Serializable;
+import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,7 +14,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 /**
@@ -35,9 +37,11 @@ public class Produto implements Serializable {
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "preco")
     private Double preco;
-    @JoinColumn(name = "id_categoria", referencedColumnName = "id_categoria")
-    @ManyToOne(optional = false)
-    private Categoria idCategoria;
+    @ManyToMany
+    @JoinTable(name = "produto_categoria",
+            joinColumns = {@JoinColumn(name = "id_produto")},
+            inverseJoinColumns = {@JoinColumn(name = "id_categoria")})
+    private Collection<Categoria> categoriaCollection;
 
     public Produto() {
     }
@@ -70,12 +74,12 @@ public class Produto implements Serializable {
         this.preco = preco;
     }
 
-    public Categoria getIdCategoria() {
-        return idCategoria;
+    public Collection<Categoria> getCategoriaCollection() {
+        return categoriaCollection;
     }
 
-    public void setIdCategoria(Categoria idCategoria) {
-        this.idCategoria = idCategoria;
+    public void setCategoriaCollection(Collection<Categoria> categoriaCollection) {
+        this.categoriaCollection = categoriaCollection;
     }
 
     @Override
